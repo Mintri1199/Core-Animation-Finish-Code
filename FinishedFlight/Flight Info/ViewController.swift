@@ -93,6 +93,7 @@ class ViewController: UIViewController {
             moveLabel(label: arrivingTo, text: data.arrivingTo, offset: offsetArriving)
             
             changeStatus(label: flightStatus, text: data.flightStatus, direction: direction)
+            planeDepart()
         } else {
             bgImageView.image = UIImage(named: data.weatherImageName)
             snowView.isHidden = !data.showWeatherEffects
@@ -209,5 +210,42 @@ class ViewController: UIViewController {
             label.transform = .identity
             auxLabel.removeFromSuperview()
         }
+    }
+    func planeDepart() {
+        let originalCenter = planeImage.center
+        
+        UIView.animateKeyframes(withDuration: 1.5, delay: 0, options:[], animations: {
+            // First key frame move the airplane upper right
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.25, animations: {
+                self.planeImage.center.x += 80
+                self.planeImage.center.y -= 10
+            })
+            
+            // Second key frame tilt the airplane upward
+            UIView.addKeyframe(withRelativeStartTime: 0.1, relativeDuration: 0.4, animations: {
+                self.planeImage.transform = CGAffineTransform(rotationAngle: -.pi / 8)
+            })
+            
+            // Third key frame move the airplane upward and fading it away
+            UIView.addKeyframe(withRelativeStartTime: 0.25, relativeDuration: 0.25, animations: {
+                self.planeImage.center.x += 100
+                self.planeImage.center.y -= 50
+                self.planeImage.alpha = 0
+            })
+            
+            // Fourth keyframe reset the plane while invisible
+            UIView.addKeyframe(withRelativeStartTime: 0.51, relativeDuration: 0.01, animations: {
+                self.planeImage.transform = .identity
+                self.planeImage.center = CGPoint(x: 0.0, y: originalCenter.y)
+            })
+            
+            // Fifth keyframe move the airplane back to its original center and make it visible
+            UIView.addKeyframe(withRelativeStartTime: 0.55, relativeDuration: 0.45, animations: {
+                self.planeImage.alpha = 1
+                self.planeImage.center = originalCenter
+            })
+            
+        }, completion: nil)
+        
     }
 }
