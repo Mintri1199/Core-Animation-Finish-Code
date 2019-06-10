@@ -271,7 +271,7 @@ class ViewController: UIViewController {
     }
     
     func animateCloud(layer: CALayer) {
-        let cloudSpeed = 4.0 / Double(view.layer.frame.size.width)
+        let cloudSpeed = 60 / Double(view.layer.frame.size.width)
         
         let duration: TimeInterval = Double(view.layer.frame.size.width - layer.frame.origin.x) * cloudSpeed
         
@@ -308,7 +308,9 @@ extension ViewController: CAAnimationDelegate {
             layer?.add(pulse, forKey: nil)
         } else if name == "cloud" {
             guard let layer = anim.value(forKey: "layer") as? CALayer else { return }
-            layer.setValue(view.bounds.width, forKey: "position.x")
+            anim.setValue(nil, forKey: "layer")
+            
+            layer.position.x = -layer.bounds.width / 2
             
             delay(seconds: 0.5) {
                 self.animateCloud(layer: layer)

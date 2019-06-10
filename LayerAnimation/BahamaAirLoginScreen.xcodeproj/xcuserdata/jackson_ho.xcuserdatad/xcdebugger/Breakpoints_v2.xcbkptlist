@@ -12,10 +12,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BahamaAirLoginScreen/ViewController.swift"
+            timestampString = "581893958.791438"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "311"
-            endingLineNumber = "311"
+            startingLineNumber = "313"
+            endingLineNumber = "313"
             landmarkName = "animationDidStop(_:finished:)"
             landmarkType = "7">
          </BreakpointContent>
