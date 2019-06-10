@@ -103,10 +103,9 @@ class ViewController: UIViewController {
         layer.cornerRadius = toRadius
     }
     
+    // MARK: viewWillAppear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loginButton.center.y += 30.0
-        loginButton.alpha = 0.0
         
         let fadeIn = CABasicAnimation(keyPath: "opacity")
         fadeIn.fromValue = 0.0
@@ -122,43 +121,58 @@ class ViewController: UIViewController {
         fadeIn.beginTime = CACurrentMediaTime() + 1.1
         cloud4.layer.add(fadeIn, forKey: nil)
         
+        let animationGroup = CAAnimationGroup()
+        animationGroup.duration = 0.5
+        animationGroup.fillMode = .backwards
+        animationGroup.delegate = self
         
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+        let fade = CABasicAnimation(keyPath: "opcatity")
+        fade.fromValue = 0.25
+        fade.toValue = 1
         
         let flyRight = CABasicAnimation(keyPath: "position.x")
         flyRight.fromValue = -view.bounds.size.width / 2
         flyRight.toValue = view.bounds.size.width / 2
-        flyRight.duration = 0.5
-        flyRight.fillMode = .both
-        flyRight.delegate = self
-        flyRight.setValue("form", forKey: "name")
-        flyRight.setValue(heading.layer, forKey: "layer")
-        heading.layer.add(flyRight, forKey: nil)
         
-        // Create an offset for the username field
-        flyRight.beginTime = CACurrentMediaTime() + 0.3
-        flyRight.setValue(username.layer, forKey: "layer")
-        username.layer.add(flyRight, forKey: nil)
-        username.layer.position.x = view.bounds.size.width / 2
+        animationGroup.animations = [fade, flyRight]
+        heading.layer.add(animationGroup, forKey: nil)
         
-        // Create an offset for the password field
-        flyRight.beginTime = CACurrentMediaTime() + 0.4
-        flyRight.setValue(password.layer, forKey: "layer")
-        password.layer.add(flyRight, forKey: nil)
-        password.layer.position.x = view.bounds.size.width / 2
+        animationGroup.setValue("form", forKey: "name")
+        animationGroup.setValue(username.layer, forKey: "layer")
+        animationGroup.beginTime = CACurrentMediaTime() + 0.3
+        username.layer.add(animationGroup, forKey: nil)
+        
+        animationGroup.setValue(password.layer, forKey: "layer")
+        animationGroup.beginTime = CACurrentMediaTime() + 0.4
+        password.layer.add(animationGroup, forKey: nil)
         
         
-        UIView.animate(withDuration: 0.5, delay: 0.5, usingSpringWithDamping: 0.5,
-                       initialSpringVelocity: 0.0,
-                       animations: {
-                        self.loginButton.center.y -= 30.0
-                        self.loginButton.alpha = 1.0
-        },
-                       completion: nil
-        )
+    }
+    
+    // MARK: viewDidAppear
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        let groupAnimation = CAAnimationGroup()
+        groupAnimation.timingFunction = CAMediaTimingFunction(name: .easeIn)
+        groupAnimation.beginTime = CACurrentMediaTime() + 0.5
+        groupAnimation.duration = 0.5
+        groupAnimation.fillMode = .backwards
+        // First animation for the animation group
+        let scaleDown = CABasicAnimation(keyPath: "transform.scale")
+        scaleDown.fromValue = 3.5
+        scaleDown.toValue = 1
+        // Second animation for the animation group
+        let rotate = CABasicAnimation(keyPath: "transform.rotation")
+        rotate.fromValue = Float.pi / 4
+        rotate.toValue = 0
+        // Third animation for the animation group
+        let fade = CABasicAnimation(keyPath: "opacity")
+        fade.fromValue = 0
+        fade.toValue = 1
+        
+        groupAnimation.animations = [scaleDown, rotate, fade]
+        loginButton.layer.add(groupAnimation, forKey: nil)
         
         animateCloud(layer: cloud1.layer)
         animateCloud(layer: cloud2.layer)
