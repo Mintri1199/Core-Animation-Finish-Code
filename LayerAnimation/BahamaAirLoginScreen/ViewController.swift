@@ -86,19 +86,22 @@ class ViewController: UIViewController {
     }
     
     func tintBackgroundColor(layer: CALayer, toColor: UIColor) {
-        let changeBackground = CABasicAnimation(keyPath: "backgroundColor")
+        let changeBackground = CASpringAnimation(keyPath: "backgroundColor")
         
         changeBackground.fromValue = layer.backgroundColor
         changeBackground.toValue = toColor.cgColor
-        changeBackground.duration = 1
+        
+        changeBackground.duration = changeBackground.settlingDuration
         layer.add(changeBackground, forKey: nil)
         layer.backgroundColor = toColor.cgColor
     }
     
     func roundCorner(layer: CALayer, toRadius: CGFloat) {
-        let corners = CABasicAnimation(keyPath: "cornerRadius")
+        let corners = CASpringAnimation(keyPath: "cornerRadius")
+        corners.fromValue = 3
         corners.toValue = toRadius
-        corners.duration = 0.33
+        corners.damping = 7
+        corners.duration = corners.settlingDuration
         layer.add(corners, forKey: nil)
         layer.cornerRadius = toRadius
     }
@@ -315,10 +318,11 @@ extension ViewController: CAAnimationDelegate {
             let layer = anim.value(forKey: "layer") as? CALayer
             anim.setValue(nil, forKey: "layer")
             
-            let pulse = CABasicAnimation(keyPath: "transform.scale")
+            let pulse = CASpringAnimation(keyPath: "transform.scale")
+            pulse.damping = 7.5
             pulse.fromValue = 1.25
             pulse.toValue = 1
-            pulse.duration = 0.25
+            pulse.duration = pulse.settlingDuration
             layer?.add(pulse, forKey: nil)
         } else if name == "cloud" {
             guard let layer = anim.value(forKey: "layer") as? CALayer else { return }
@@ -342,5 +346,34 @@ extension ViewController: UITextFieldDelegate {
         
         print(runningAnimation)
         info.layer.removeAnimation(forKey: "infoappear")
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        if text.count < 5 {
+            // add animation here
+            let jump = CASpringAnimation(keyPath: "position.y")
+            jump.fromValue = textField.layer.position.y + 1
+            jump.toValue = textField.layer.position.y
+            jump.initialVelocity = 100
+            jump.mass =  10
+            jump.stiffness = 1500
+            jump.damping = 50
+            jump.duration = jump.settlingDuration
+            
+            textField.layer.add(jump, forKey: nil)
+            
+            textField.layer.borderWidth = 3
+            textField.layer.cornerRadius = 5
+            textField.layer.borderColor = UIColor.clear.cgColor
+            
+            let flash = CASpringAnimation(keyPath: "borderColor")
+            flash.damping = 7
+            flash.stiffness = 200
+            flash.fromValue = UIColor(red: 1.0, green: 0.27, blue: 0.0, alpha: 1.0).cgColor
+            flash.toValue = UIColor.white.cgColor
+            flash.duration = flash.settlingDuration
+            textField.layer.add(flash, forKey: nil)
+        }
     }
 }
