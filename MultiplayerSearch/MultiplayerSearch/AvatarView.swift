@@ -26,10 +26,11 @@ import QuartzCore
 @IBDesignable
 class AvatarView: UIView {
     
+    
     //constants
     let lineWidth: CGFloat = 6.0
     let animationDuration = 1.0
-
+    
     //ui
     let photoLayer = CALayer()
     let circleLayer = CAShapeLayer()
@@ -58,6 +59,7 @@ class AvatarView: UIView {
     }
     
     var shouldTransitionToFinishedState = false
+    var isSquare: Bool = false
     
     override func didMoveToWindow() {
         layer.addSublayer(photoLayer)
@@ -103,14 +105,29 @@ class AvatarView: UIView {
             
         }) { (_) in
             delay(seconds: 0.1) {
-                self.bounceOff(point: originalCenter, morphSize: morphSize)
+                if self.shouldTransitionToFinishedState {
+                    self.animateToSquare()
+                }
             }
-        }
-        
-        let morphedFrame = (originalCenter.x > point.x) ?
-        CGRect(x: 0, y: bounds.height - morphSize.height, width: morphSize.width, height: morphSize.height) :
             
-        CGRect(x: bounds.width - morphSize.width, y: bounds.height - morphSize.height, width: morphSize.width, height: morphSize.height)
+        }
+        UIView.animate(withDuration: animationDuration,
+                       delay: animationDuration,
+                       usingSpringWithDamping: 0.7,
+                       initialSpringVelocity: 1.0,
+                       animations: {
+                        self.center = originalCenter
+        }, completion: { _ in
+            delay(seconds: 0.1) {
+                if !self.isSquare {
+                    self.bounceOff(point: point, morphSize: morphSize)
+                }
+            }
+        })
+        let morphedFrame = (originalCenter.x > point.x) ?
+            CGRect(x: 0, y: bounds.height - morphSize.height, width: morphSize.width, height: morphSize.height) :
+            
+            CGRect(x: bounds.width - morphSize.width, y: bounds.height - morphSize.height, width: morphSize.width, height: morphSize.height)
         
         let morphAnimation = CABasicAnimation(keyPath: "path")
         morphAnimation.duration = animationDuration
@@ -119,6 +136,21 @@ class AvatarView: UIView {
         
         circleLayer.add(morphAnimation, forKey: nil)
         maskLayer.add(morphAnimation, forKey: nil)
+    }
+    
+    func animateToSquare() {
+        isSquare = true
+        let squarePath = UIBezierPath(rect: bounds).cgPath
+        let squareAnimation = CABasicAnimation(keyPath: "path")
+        squareAnimation.duration = 0.25
+        squareAnimation.fromValue = circleLayer.path
+        squareAnimation.toValue = squarePath
+        
+        circleLayer.add(squareAnimation, forKey: nil)
+        maskLayer.add(squareAnimation, forKey: nil)
+        
+        circleLayer.path = squarePath
+        maskLayer.path = squarePath
     }
     
 }
