@@ -54,7 +54,6 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         //set up the UI
         loginButton.layer.cornerRadius = 8.0
         loginButton.layer.masksToBounds = true
@@ -260,6 +259,7 @@ class ViewController: UIViewController {
         wobble.duration = 0.25
         wobble.repeatCount = 4
         wobble.values = [0.0, -.pi/4.0, 0.0, .pi/4.0, 0.0]
+        
         wobble.keyTimes = [0.0, 0.25, 0.5, 0.75, 1.0]
         heading.layer.add(wobble, forKey: nil)
     }
@@ -312,7 +312,7 @@ class ViewController: UIViewController {
     
     func animateCloud(layer: CALayer) {
         let cloudSpeed = 60 / Double(view.layer.frame.size.width)
-        
+
         let duration: TimeInterval = Double(view.layer.frame.size.width - layer.frame.origin.x) * cloudSpeed
         
         let cloudMove = CABasicAnimation(keyPath: "position.x")
