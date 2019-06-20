@@ -151,6 +151,12 @@ class AvatarView: UIView {
         
         circleLayer.path = squarePath
         maskLayer.path = squarePath
+        
+        let shrinkBorder = CABasicAnimation(keyPath: "lineWidth")
+        shrinkBorder.toValue = 0
+        shrinkBorder.duration = 0.5
+        circleLayer.add(shrinkBorder, forKey: nil)
+        circleLayer.lineWidth = 0
     }
     
 }
