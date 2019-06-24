@@ -34,6 +34,7 @@ class ViewController: UIViewController {
     let dot = CALayer()
     let dotLength: CGFloat = 6.0
     let dotOffSet: CGFloat = 8.0
+    var lastTransformScale: CGFloat = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,11 +66,25 @@ class ViewController: UIViewController {
     }
     
     @IBAction func actionStartMonitoring(_ sender: AnyObject) {
-        
+        dot.backgroundColor = UIColor.green.cgColor
+        monitor.startMonitoringWithHandler { (level) in
+            self.meterLabel.text = String(format: "%.2f db", level)
+            let scaleFactor = max(0.2, CGFloat(level) + 50 / 2)
+            
+            let scale = CABasicAnimation(keyPath: "transform.scale.y")
+            scale.fromValue = self.lastTransformScale
+            scale.toValue = scaleFactor
+            scale.duration = 0.1
+            scale.isRemovedOnCompletion = false
+            scale.fillMode = .forwards
+            self.dot.add(scale, forKey: nil)
+            self.lastTransformScale = scaleFactor
+        }
     }
     
     @IBAction func actionEndMonitoring(_ sender: AnyObject) {
-        
+        monitor.stopMonitoring()
+        dot.removeAllAnimations()
         //speak after 1 second
         delay(seconds: 1.0) {
             self.startSpeaking()
