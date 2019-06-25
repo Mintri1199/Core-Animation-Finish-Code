@@ -53,15 +53,6 @@ class ViewController: UIViewController {
         replicator.addSublayer(dot)
         replicator.instanceCount = Int(view.frame.size.width / dotOffSet)
         replicator.instanceTransform = CATransform3DMakeTranslation(-dotOffSet, 0, 0)
-        
-        // This is a test animation, you're going to delete it
-//        let move = CABasicAnimation(keyPath: "position.y")
-//        move.fromValue = dot.position.y
-//        move.toValue = dot.position.y - 50
-//        move.duration = 1
-//        move.repeatCount = 10
-//        move.autoreverses = true
-//        dot.add(move, forKey: nil)
         replicator.instanceDelay = 0.02
     }
     
@@ -84,7 +75,23 @@ class ViewController: UIViewController {
     
     @IBAction func actionEndMonitoring(_ sender: AnyObject) {
         monitor.stopMonitoring()
-        dot.removeAllAnimations()
+        
+        let scale = CABasicAnimation(keyPath: "transform.scale.y")
+        scale.fromValue = lastTransformScale
+        scale.toValue = 1.0
+        scale.duration = 0.2
+        scale.isRemovedOnCompletion = false
+        scale.fillMode = .forwards
+        dot.add(scale, forKey: nil)
+        
+        dot.backgroundColor = UIColor.magenta.cgColor
+        
+        let tint = CABasicAnimation(keyPath: "backgroundColor")
+        tint.fromValue = UIColor.green.cgColor
+        tint.toValue = UIColor.magenta.cgColor
+        tint.duration = 1.2
+        tint.fillMode = .backwards
+        dot.add(tint, forKey: nil)
         //speak after 1 second
         delay(seconds: 1.0) {
             self.startSpeaking()
@@ -150,6 +157,7 @@ class ViewController: UIViewController {
     }
     
     func endSpeaking() {
+        // Come back to this and smooth out the animation
         replicator.removeAllAnimations()
         let scale = CABasicAnimation(keyPath: "transform")
         scale.toValue = NSValue(caTransform3D: CATransform3DIdentity)
@@ -157,6 +165,14 @@ class ViewController: UIViewController {
         scale.isRemovedOnCompletion = false
         scale.fillMode = .forwards
         dot.add(scale, forKey: nil)
+        
+        let revertColor = CABasicAnimation(keyPath: "backgroundColor")
+        revertColor.toValue = UIColor.lightGray.cgColor
+        revertColor.duration = 1.2
+        revertColor.fillMode = .backwards
+        dot.add(revertColor, forKey: nil)
+
+        
         
         dot.removeAnimation(forKey: "dotColor")
         dot.removeAnimation(forKey: "dotOpacity")
