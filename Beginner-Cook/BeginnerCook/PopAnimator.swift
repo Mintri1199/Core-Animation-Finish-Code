@@ -19,18 +19,6 @@ class PopAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-//        // The transition container view
-//        let containerView = transitionContext.containerView
-//        // The view that we are transitioning to
-//        let toView = transitionContext.view(forKey: .to)!
-//
-//        containerView.addSubview(toView)
-//        toView.alpha = 0
-//        UIView.animate(withDuration: duration, animations: {
-//            toView.alpha = 1
-//        }) { (_) in
-//            transitionContext.completeTransition(true)
-//        }
         let containerView = transitionContext.containerView
         let toView = transitionContext.view(forKey: .to)!
         let herbView = presenting ? toView : transitionContext.view(forKey: .from)!
@@ -46,7 +34,7 @@ class PopAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             finalFrame.height / initialFrame.height
         
         let scaleTransform = CGAffineTransform(scaleX: xScaleFactor,
-                                                    y: yScaleFactor)
+                                               y: yScaleFactor)
         
         if presenting {
             herbView.transform = scaleTransform
@@ -59,16 +47,25 @@ class PopAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         containerView.addSubview(toView)
         containerView.bringSubviewToFront(herbView)
         
-        UIView.animate(withDuration: duration, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: [], animations: {
-            herbView.transform = self.presenting ?
-                CGAffineTransform.identity : scaleTransform
-            herbView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
+        let herbVC = transitionContext.viewController(
+            forKey: presenting ? .to : .from) as! HerbDetailsViewController
+        
+        if presenting {
+            herbVC.containerView.alpha = 0.0
+        }
+        
+        UIView.animate(withDuration: duration, delay: 0, usingSpringWithDamping: 0.4,
+                       initialSpringVelocity: 0,
+                       animations: {
+                        herbView.transform = self.presenting ? CGAffineTransform.identity : scaleTransform
+                        herbView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
+                        herbVC.containerView.alpha = self.presenting ? 1 : 0
+                        herbView.layer.cornerRadius = self.presenting ? 0 : 20 / xScaleFactor
+        }, completion: { _ in
             if !self.presenting {
                 self.dismissCompletion?()
             }
-        }) { (_) in
-            
             transitionContext.completeTransition(true)
-        }
+        })
     }
 }
