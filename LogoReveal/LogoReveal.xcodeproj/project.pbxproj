@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		44F4563222C410A200EB7896 /* RevealAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44F4563122C410A200EB7896 /* RevealAnimator.swift */; };
 		9C967C5E1A4F1B6C00A588A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C967C5D1A4F1B6C00A588A2 /* AppDelegate.swift */; };
 		9C967C601A4F1B6C00A588A2 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C967C5F1A4F1B6C00A588A2 /* MasterViewController.swift */; };
 		9C967C621A4F1B6C00A588A2 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C967C611A4F1B6C00A588A2 /* DetailViewController.swift */; };
@@ -17,10 +18,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		44F4563122C410A200EB7896 /* RevealAnimator.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = RevealAnimator.swift; sourceTree = "<group>"; tabWidth = 2; };
 		9C967C581A4F1B6C00A588A2 /* LogoReveal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LogoReveal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C967C5C1A4F1B6C00A588A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9C967C5D1A4F1B6C00A588A2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9C967C5F1A4F1B6C00A588A2 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
+		9C967C5F1A4F1B6C00A588A2 /* MasterViewController.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; tabWidth = 2; };
 		9C967C611A4F1B6C00A588A2 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		9C967C641A4F1B6C00A588A2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9C967C661A4F1B6C00A588A2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				9C967C801A4F1F6100A588A2 /* RWLogoLayer.swift */,
 				9C967C5D1A4F1B6C00A588A2 /* AppDelegate.swift */,
 				9C967C631A4F1B6C00A588A2 /* Main.storyboard */,
+				44F4563122C410A200EB7896 /* RevealAnimator.swift */,
 				9C967C661A4F1B6C00A588A2 /* Images.xcassets */,
 				9C967C681A4F1B6C00A588A2 /* LaunchScreen.xib */,
 				9C967C5B1A4F1B6C00A588A2 /* Supporting Files */,
@@ -119,6 +122,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -154,6 +158,7 @@
 				9C967C621A4F1B6C00A588A2 /* DetailViewController.swift in Sources */,
 				9C967C601A4F1B6C00A588A2 /* MasterViewController.swift in Sources */,
 				9C967C5E1A4F1B6C00A588A2 /* AppDelegate.swift in Sources */,
+				44F4563222C410A200EB7896 /* RevealAnimator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
