@@ -9,7 +9,7 @@
 import UIKit
 
 class RevealAnimator: NSObject, UIViewControllerAnimatedTransitioning, CAAnimationDelegate {
-  let animationDuration = 2.0
+  let animationDuration = 0.5
   var operation: UINavigationController.Operation = .push
   weak var storeContext: UIViewControllerContextTransitioning?
   
@@ -44,7 +44,27 @@ class RevealAnimator: NSObject, UIViewControllerAnimatedTransitioning, CAAnimati
       toVC.view.layer.mask = maskLayer
       maskLayer.add(animation, forKey: nil)
       fromVC.logo.add(animation, forKey: nil)
-    }  }
+      
+      toVC.view.layer.opacity = 0
+      let fadeIn = CABasicAnimation(keyPath: "opacity")
+      fadeIn.duration = animationDuration
+      fadeIn.fromValue = 0
+      fadeIn.toValue = 1
+      toVC.view.layer.add(fadeIn, forKey: nil)
+    } else {
+      let fromVC = transitionContext.view(forKey: .from)!
+      let toVC = transitionContext.view(forKey: .to)!
+      let containerView = transitionContext.containerView
+      containerView.insertSubview(toVC, belowSubview: fromVC)
+      
+      UIView.animate(withDuration: animationDuration, animations: {
+        fromVC.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+        fromVC.alpha = 0.5
+      }, completion: { (_) in
+        transitionContext.completeTransition(true)
+      })
+    }
+  }
   
   func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
     if let context = storeContext {
@@ -53,6 +73,7 @@ class RevealAnimator: NSObject, UIViewControllerAnimatedTransitioning, CAAnimati
       fromVC.logo.removeAllAnimations()
       let toVC = context.viewController(forKey: .to) as! DetailViewController
       toVC.view.layer.mask = nil
+      toVC.view.layer.opacity = 1
     }
     storeContext = nil
   }
