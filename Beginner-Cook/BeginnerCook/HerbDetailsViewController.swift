@@ -22,7 +22,7 @@
 
 import UIKit
 
-class HerbDetailsViewController: UIViewController, UIViewControllerTransitioningDelegate {
+class HerbDetailsViewController: UIViewController {
   
   @IBOutlet var containerView: UIView!
   

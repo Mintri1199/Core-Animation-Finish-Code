@@ -23,7 +23,7 @@
 import UIKit
 import QuartzCore
 
-class DetailViewController: UITableViewController, UINavigationControllerDelegate {
+class DetailViewController: UITableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
