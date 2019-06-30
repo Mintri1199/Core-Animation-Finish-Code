@@ -52,12 +52,6 @@ class MasterViewController: UIViewController {
     view.layer.addSublayer(logo)
   }
   
-  //
-  // MARK: Gesture recognizer handler
-  //
-  //  @objc func didTap() {
-  //    performSegue(withIdentifier: "details", sender: nil)
-  //  }
   @objc func didPan(_ recognizer: UIPanGestureRecognizer) {
     switch recognizer.state {
     case .began:
