@@ -28,7 +28,6 @@ class AnimatorFactory {
     return scale
   }
   
-  @discardableResult
   static func jiggle(view: UIView) -> UIViewPropertyAnimator {
     return UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.33, delay: 0, options: [], animations: {
       UIView.animateKeyframes(withDuration: 1, delay: 0, options: [], animations: {
@@ -49,5 +48,12 @@ class AnimatorFactory {
     }, completion: { _ in
       view.transform = .identity
     })
+  }
+  
+  @discardableResult
+  static func fade(effectView: UIVisualEffectView, visible: Bool) -> UIViewPropertyAnimator {
+    return UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.5, delay: 0.1, options: .curveEaseOut, animations: {
+      effectView.alpha = visible ? 1 : 0
+    }, completion: nil)
   }
 }
