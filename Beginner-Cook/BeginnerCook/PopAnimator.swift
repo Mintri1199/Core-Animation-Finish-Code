@@ -47,8 +47,7 @@ class PopAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         containerView.addSubview(toView)
         containerView.bringSubviewToFront(herbView)
         
-        let herbVC = transitionContext.viewController(
-            forKey: presenting ? .to : .from) as! HerbDetailsViewController
+        let herbVC = transitionContext.viewController( forKey: presenting ? .to : .from) as! HerbDetailsViewController
         
         if presenting {
             herbVC.containerView.alpha = 0.0
